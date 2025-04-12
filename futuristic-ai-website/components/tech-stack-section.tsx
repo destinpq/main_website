@@ -1,7 +1,6 @@
 "use client"
 
 import { useRef, useState, useEffect } from "react"
-import { SafeMotion } from "@/components/framer-motion-safe"
 
 interface TechItem {
   name: string
@@ -17,9 +16,19 @@ export default function TechStackSection({ inView }: TechStackSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [isMounted, setIsMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
+    
+    // Check if we're on a mobile device
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   const techStack: TechItem[] = [
@@ -146,35 +155,10 @@ export default function TechStackSection({ inView }: TechStackSectionProps) {
   const filteredTech =
     selectedCategory === "all" ? techStack : techStack.filter((item) => item.category === selectedCategory)
 
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.05,
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    }),
-  }
-
   if (!isMounted) {
     return (
-      <div ref={containerRef} className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20">
-        <div className="text-center max-w-4xl mx-auto mb-16">
+      <div ref={containerRef} className="relative flex flex-col items-center justify-center px-4 py-8 md:py-16 bg-black">
+        <div className="text-center max-w-4xl mx-auto mb-8 md:mb-16">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-400 to-amber-500 text-transparent bg-clip-text mb-6">
             Our Technology Stack
           </h2>
@@ -187,26 +171,21 @@ export default function TechStackSection({ inView }: TechStackSectionProps) {
   }
 
   return (
-    <div ref={containerRef} className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20">
-      <SafeMotion
-        className="text-center max-w-4xl mx-auto mb-16"
-        initial="hidden"
-        animate={inView ? "visible" : "hidden"}
-        variants={textVariants}
-      >
+    <div ref={containerRef} className="relative flex flex-col items-center justify-center px-4 py-8 md:py-16 bg-black">
+      <div className="text-center max-w-4xl mx-auto mb-8 md:mb-16">
         <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-400 to-amber-500 text-transparent bg-clip-text mb-6">
           Our Technology Stack
         </h2>
         <p className="text-xl text-gray-300">
           Powered by cutting-edge technologies to deliver unparalleled AI solutions
         </p>
-      </SafeMotion>
+      </div>
 
       {/* Tech Stack Categories */}
-      <div className="w-full max-w-7xl mx-auto mb-10">
+      <div className="w-full max-w-7xl mx-auto mb-6 md:mb-10">
         <div className="flex flex-wrap gap-2 justify-center">
           {categories.map((category, index) => (
-            <SafeMotion
+            <button
               key={index}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                 selectedCategory === category
@@ -214,12 +193,9 @@ export default function TechStackSection({ inView }: TechStackSectionProps) {
                   : "bg-gray-800/50 text-gray-300 hover:bg-gray-700/50"
               }`}
               onClick={() => setSelectedCategory(category)}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ delay: index * 0.05, duration: 0.5 }}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
-            </SafeMotion>
+            </button>
           ))}
         </div>
       </div>
@@ -228,18 +204,14 @@ export default function TechStackSection({ inView }: TechStackSectionProps) {
       <div className="w-full max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredTech.map((tech, index) => (
-            <SafeMotion
+            <div
               key={index}
-              custom={index}
-              variants={itemVariants}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
               className="bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-lg p-4 hover:border-yellow-500/50 transition-all duration-300"
             >
               <h3 className="text-xl font-bold text-white mb-1">{tech.name}</h3>
               <p className="text-sm text-yellow-400 mb-2">{tech.category}</p>
               <p className="text-gray-400">{tech.description}</p>
-            </SafeMotion>
+            </div>
           ))}
         </div>
       </div>

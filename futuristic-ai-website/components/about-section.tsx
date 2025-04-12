@@ -11,9 +11,18 @@ interface AboutSectionProps {
 export default function AboutSection({ inView }: AboutSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isMounted, setIsMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
+    // Check if we're on a mobile device
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   const teamMembers = [
@@ -43,14 +52,15 @@ export default function AboutSection({ inView }: AboutSectionProps) {
     },
   ]
 
+  // Simplified animation variants for mobile
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: {
-        delay: i * 0.2,
-        duration: 0.8,
+        delay: isMobile ? 0.1 : i * 0.2,
+        duration: isMobile ? 0.5 : 0.8,
         ease: "easeOut",
       },
     }),
@@ -62,8 +72,8 @@ export default function AboutSection({ inView }: AboutSectionProps) {
       opacity: 1,
       y: 0,
       transition: {
-        delay: 0.3 + (i * 0.1),
-        duration: 0.6,
+        delay: isMobile ? 0.1 : 0.3 + (i * 0.1),
+        duration: isMobile ? 0.3 : 0.6,
         ease: "easeOut",
       },
     }),
@@ -85,11 +95,11 @@ export default function AboutSection({ inView }: AboutSectionProps) {
   }
 
   return (
-    <div ref={containerRef} className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20">
+    <div ref={containerRef} className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20 bg-black">
       <SafeMotion
         className="text-center max-w-4xl mx-auto mb-16"
-        initial="hidden"
-        animate={inView ? "visible" : "hidden"}
+        initial={isMobile ? { opacity: 1, y: 0 } : "hidden"}
+        animate={isMobile ? { opacity: 1, y: 0 } : (inView ? "visible" : "hidden")}
         custom={0}
         variants={textVariants}
       >
@@ -104,9 +114,9 @@ export default function AboutSection({ inView }: AboutSectionProps) {
       {/* Team section */}
       <SafeMotion
         className="w-full max-w-6xl mx-auto mb-16"
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 1 }}
+        initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
+        animate={isMobile ? { opacity: 1 } : (inView ? { opacity: 1 } : { opacity: 0 })}
+        transition={{ duration: isMobile ? 0.1 : 1 }}
       >
         <h3 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-yellow-400 to-amber-500 text-transparent bg-clip-text">
           Meet Our AI Experts
@@ -117,8 +127,8 @@ export default function AboutSection({ inView }: AboutSectionProps) {
             <SafeMotion
               key={index}
               variants={cardVariants}
-              initial="hidden"
-              animate={inView ? "visible" : "hidden"}
+              initial={isMobile ? { opacity: 1, y: 0 } : "hidden"}
+              animate={isMobile ? { opacity: 1, y: 0 } : (inView ? "visible" : "hidden")}
               custom={index}
               className="bg-gradient-to-b from-gray-900/80 to-black/80 border border-gray-800 rounded-xl overflow-hidden hover:border-yellow-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10"
             >
@@ -128,6 +138,8 @@ export default function AboutSection({ inView }: AboutSectionProps) {
                   alt={member.name}
                   className="object-cover rounded-t-xl"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  priority={index < 2} // Load first two images with priority
                   onError={(e) => {
                     // Fallback for missing images
                     const target = e.target as HTMLImageElement;
@@ -147,8 +159,8 @@ export default function AboutSection({ inView }: AboutSectionProps) {
 
       <SafeMotion
         className="text-center max-w-4xl mx-auto mt-16"
-        initial="hidden"
-        animate={inView ? "visible" : "hidden"}
+        initial={isMobile ? { opacity: 1, y: 0 } : "hidden"}
+        animate={isMobile ? { opacity: 1, y: 0 } : (inView ? "visible" : "hidden")}
         custom={1}
         variants={textVariants}
       >

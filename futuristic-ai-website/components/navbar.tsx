@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
-import { SafeMotion, SafeAnimatePresence } from "@/components/framer-motion-safe"
 import Image from "next/image"
 import { ThemeToggle } from "@/components/theme-toggle"
 
@@ -11,9 +10,17 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
+
+    // Check if we're on a mobile device
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
 
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
@@ -22,7 +29,11 @@ export default function Navbar() {
     // Only add event listener if we're in the browser environment
     if (typeof window !== "undefined") {
       window.addEventListener("scroll", handleScroll, { passive: true })
-      return () => window.removeEventListener("scroll", handleScroll)
+      window.addEventListener('resize', checkMobile)
+      return () => {
+        window.removeEventListener("scroll", handleScroll)
+        window.removeEventListener('resize', checkMobile)
+      }
     }
   }, [])
 
@@ -76,14 +87,9 @@ export default function Navbar() {
 
   return (
     <>
-      <SafeMotion
-        className={`fixed top-0 left-0 right-0 z-50 px-4 py-3 transition-all duration-300 ${
-          isScrolled ? "bg-black/90 backdrop-blur-md shadow-lg border-b border-yellow-500/20" : "bg-transparent"
-        }`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+      <nav className={`fixed top-0 left-0 right-0 z-50 px-4 py-3 transition-all duration-300 ${
+        isScrolled ? "bg-black/90 backdrop-blur-md shadow-lg border-b border-yellow-500/20" : "bg-transparent"
+      }`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center">
             <div className="relative mr-3 w-[60px] h-[60px] cursor-pointer" onClick={() => scrollToSection('hero')}>
@@ -100,7 +106,14 @@ export default function Navbar() {
               <div className="absolute inset-[25%] rounded-full flex items-center justify-center overflow-hidden">
                 <div className="w-full h-full relative flex items-center justify-center bg-black rounded-full">
                   <div className="w-[75%] h-[75%] relative">
-                    <Image src="/thunh.png" alt="DestinPQ Logo" fill className="object-contain" />
+                    <Image 
+                      src="/thunh.png" 
+                      alt="DestinPQ Logo" 
+                      fill 
+                      sizes="60px"
+                      priority
+                      className="object-contain" 
+                    />
                   </div>
                 </div>
               </div>
@@ -147,51 +160,36 @@ export default function Navbar() {
             </Button>
           </div>
         </div>
-      </SafeMotion>
+      </nav>
 
       {/* Mobile Menu */}
-      <SafeAnimatePresence>
-        {isMobileMenuOpen && (
-          <SafeMotion
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-md flex flex-col pt-20 px-4"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -50 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="flex flex-col space-y-6 items-center">
-              {navLinks.map((link, index) => (
-                <SafeMotion
-                  key={index}
-                  className="text-xl text-gray-300 hover:text-yellow-400 transition-colors cursor-pointer"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  onClick={() => scrollToSection(link.id)}
-                >
-                  {link.name}
-                </SafeMotion>
-              ))}
-
-              <SafeMotion
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: navLinks.length * 0.1 }}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-black/95 backdrop-blur-md flex flex-col pt-20 px-4">
+          <div className="flex flex-col space-y-6 items-center">
+            {navLinks.map((link, index) => (
+              <div
+                key={index}
+                className="text-xl text-gray-300 hover:text-yellow-400 transition-colors cursor-pointer"
+                onClick={() => scrollToSection(link.id)}
               >
-                <div className="flex justify-center mb-4">
-                  <ThemeToggle />
-                </div>
-                <Button 
-                  className="bg-black hover:bg-gray-900 text-white border-2 border-yellow-500 w-full mt-4"
-                  onClick={() => scrollToSection('contact')}
-                >
-                  Get Started
-                </Button>
-              </SafeMotion>
+                {link.name}
+              </div>
+            ))}
+
+            <div>
+              <div className="flex justify-center mb-4">
+                <ThemeToggle />
+              </div>
+              <Button 
+                className="bg-black hover:bg-gray-900 text-white border-2 border-yellow-500 w-full mt-4"
+                onClick={() => scrollToSection('contact')}
+              >
+                Get Started
+              </Button>
             </div>
-          </SafeMotion>
-        )}
-      </SafeAnimatePresence>
+          </div>
+        </div>
+      )}
     </>
   )
 }

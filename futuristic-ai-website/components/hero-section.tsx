@@ -2,7 +2,6 @@
 
 import { useRef, useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { SafeMotion } from "@/components/framer-motion-safe"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -13,9 +12,19 @@ interface HeroSectionProps {
 export default function HeroSection({ inView }: HeroSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isMounted, setIsMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
+    
+    // Check if we're on a mobile device
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   const scrollToSection = (id: string) => {
@@ -25,22 +34,9 @@ export default function HeroSection({ inView }: HeroSectionProps) {
     }
   };
 
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.2,
-        duration: 0.8,
-        ease: "easeOut",
-      },
-    }),
-  }
-
   if (!isMounted) {
     return (
-      <div ref={containerRef} className="relative h-screen flex flex-col items-center justify-center px-4">
+      <div ref={containerRef} className="relative flex flex-col items-center justify-center px-4 py-16 bg-black">
         {/* Hero content placeholder */}
         <div className="relative flex flex-col items-center justify-center">
           {/* Logo with direct black to yellow transition */}
@@ -80,15 +76,10 @@ export default function HeroSection({ inView }: HeroSectionProps) {
   }
 
   return (
-    <div ref={containerRef} className="relative min-h-screen flex flex-col items-center justify-center px-4 py-16 md:py-0">
+    <div ref={containerRef} className="relative flex flex-col items-center justify-center px-4 py-12 md:py-16 bg-black">
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         {/* Logo with animation */}
-        <SafeMotion
-          className="relative mb-12 md:mb-16 w-[280px] h-[280px] md:w-[350px] md:h-[350px]"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
+        <div className="relative mb-8 md:mb-12 w-[250px] h-[250px] md:w-[350px] md:h-[350px]">
           {/* Outer yellow glow with larger blur for smoother transition */}
           <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-600 to-amber-500 blur-lg md:blur-2xl opacity-90 scale-125 md:scale-150"></div>
           
@@ -113,38 +104,20 @@ export default function HeroSection({ inView }: HeroSectionProps) {
               </div>
             </div>
           </div>
-        </SafeMotion>
+        </div>
         
         {/* Text content */}
         <div className="relative z-10 text-center max-w-4xl mx-auto">
-          <SafeMotion
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 text-transparent bg-clip-text pb-3"
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            custom={0}
-            variants={textVariants}
-          >
+          <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 text-transparent bg-clip-text pb-3">
             Designing Tomorrow&apos;s Intelligence
-          </SafeMotion>
+          </div>
 
-          <SafeMotion
-            className="mt-4 md:mt-6 text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 px-2"
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            custom={1}
-            variants={textVariants}
-          >
+          <div className="mt-4 md:mt-6 text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 px-2">
             Pioneering the future of AI and machine learning solutions that transform industries and redefine
             possibilities.
-          </SafeMotion>
+          </div>
 
-          <SafeMotion
-            className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 justify-center"
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            custom={2}
-            variants={textVariants}
-          >
+          <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
               className="bg-black hover:bg-gray-900 text-white border-2 border-yellow-500 px-6 py-5 text-base md:px-8 md:py-6 md:text-lg"
@@ -160,7 +133,7 @@ export default function HeroSection({ inView }: HeroSectionProps) {
             >
               View Case Studies
             </Button>
-          </SafeMotion>
+          </div>
         </div>
       </div>
     </div>

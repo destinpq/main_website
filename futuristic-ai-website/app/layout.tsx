@@ -1,12 +1,17 @@
-import type React from "react"
-import "@/app/globals.css"
+import './globals.css'
 import { ThemeProvider } from "@/components/theme-provider"
+import { Viewport } from 'next'
+import Script from 'next/script'
 
 export const metadata = {
-  title: "DestinPQ - Designing Tomorrow's Intelligence",
-  description:
-    "Pioneering the future of AI and machine learning solutions that transform industries and redefine possibilities.",
-    generator: 'v0.dev'
+  title: "DestinPQ - Advanced AI Solutions",
+  description: "Pioneering AI and machine learning solutions that transform industries",
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 2,
 }
 
 export default function RootLayout({
@@ -16,18 +21,41 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <meta name="theme-color" content="#000000" />
-      </head>
-      <body>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <head />
+      <body className="bg-black">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
+          <Script id="viewport-detector" strategy="afterInteractive">
+            {`
+              function setViewportCookie() {
+                document.cookie = "viewport-width=" + window.innerWidth + "; path=/; max-age=86400";
+              }
+              
+              // Set on load
+              setViewportCookie();
+              
+              // Update on resize
+              window.addEventListener('resize', function() {
+                setViewportCookie();
+                
+                // If size changes dramatically, reload to get correct version
+                const isMobile = window.innerWidth < 768;
+                const url = window.location.pathname;
+                const onMobilePage = url.startsWith('/mobile');
+                
+                if ((isMobile && !onMobilePage) || (!isMobile && onMobilePage)) {
+                  window.location.reload();
+                }
+              });
+            `}
+          </Script>
         </ThemeProvider>
       </body>
     </html>
   )
 }
-
-
-import './globals.css'

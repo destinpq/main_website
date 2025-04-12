@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useMemo } from "react"
+import { useRef, useMemo, useState, useEffect } from "react"
 import { useFrame } from "@react-three/fiber"
 import { Points, PointMaterial } from "@react-three/drei"
 import * as THREE from "three"
@@ -13,9 +13,25 @@ export default function NeuralNetwork({ scrollY }: NeuralNetworkProps) {
   const ref = useRef<THREE.Points>(null!)
   const pointsRef = useRef<THREE.BufferAttribute>(null!)
   const connectionsRef = useRef<THREE.LineSegments>(null!)
-
+  const [isMobile, setIsMobile] = useState(false)
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      if (typeof window !== 'undefined') {
+        setIsMobile(window.innerWidth < 768 || 
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+      }
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+  
+  // Generate fewer points for all devices
+  const count = 150
+  
   // Generate random points for the neural network
-  const count = 500
   const points = useMemo(() => {
     const positions = new Float32Array(count * 3)
     const colors = new Float32Array(count * 3)
@@ -40,26 +56,9 @@ export default function NeuralNetwork({ scrollY }: NeuralNetworkProps) {
 
     const time = state.clock.getElapsedTime()
     const scrollFactor = scrollY * 0.001
-
-    // Rotate the entire neural network
-    ref.current.rotation.x = Math.sin(time * 0.1) * 0.2
-    ref.current.rotation.y = time * 0.05 + scrollFactor
-
-    // Update point positions to create a pulsing effect
-    const positions = ref.current.geometry.attributes.position.array as Float32Array
-    for (let i = 0; i < count; i++) {
-      const i3 = i * 3
-      const x = positions[i3]
-      const y = positions[i3 + 1]
-      const z = positions[i3 + 2]
-
-      // Apply subtle movement
-      positions[i3] = x + Math.sin(time + i) * 0.01
-      positions[i3 + 1] = y + Math.cos(time + i) * 0.01
-      positions[i3 + 2] = z + Math.sin(time * 0.5 + i) * 0.01
-    }
-
-    ref.current.geometry.attributes.position.needsUpdate = true
+    
+    // Simple rotation for all devices
+    ref.current.rotation.y = time * 0.02 + scrollFactor
   })
 
   return (
@@ -68,7 +67,7 @@ export default function NeuralNetwork({ scrollY }: NeuralNetworkProps) {
         <PointMaterial
           transparent
           vertexColors
-          size={0.15}
+          size={0.2}
           sizeAttenuation={true}
           depthWrite={false}
           blending={THREE.AdditiveBlending}

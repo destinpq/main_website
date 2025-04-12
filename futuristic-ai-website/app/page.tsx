@@ -1,150 +1,100 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import Navbar from "@/components/navbar"
+import { useEffect, useState, useRef } from 'react'
+import HeroSection from '@/components/hero-section'
+import Navbar from '@/components/navbar'
+import AboutSection from '@/components/about-section'
+import ServicesSection from '@/components/services-section'
+import CaseStudiesSection from '@/components/case-studies-section'
+import TechStackSection from '@/components/tech-stack-section'
+import ContactSection from '@/components/contact-section'
 import ChatbotAssistant from "@/components/chatbot-assistant"
 
-// Import sections individually to help identify the problematic component
-import HeroSection from "@/components/hero-section"
-import AboutSection from "@/components/about-section"
-import ServicesSection from "@/components/services-section"
-import CaseStudiesSection from "@/components/case-studies-section"
-import TechStackSection from "@/components/tech-stack-section"
-import ContactSection from "@/components/contact-section"
+// Custom hook to detect if element is in view
+function useInView(options = {}) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  
+  useEffect(() => {
+    if (!ref.current) return;
+    
+    const observer = new IntersectionObserver(([entry]) => {
+      setInView(entry.isIntersecting);
+    }, options);
+    
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [ref.current, options]);
+  
+  return { ref, inView };
+}
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0)
-  const heroRef = useRef(null)
-  const aboutRef = useRef(null)
-  const servicesRef = useRef(null)
-  const caseStudiesRef = useRef(null)
-  const techStackRef = useRef(null)
-  const contactRef = useRef(null)
+  const [isMounted, setIsMounted] = useState(false)
 
-  // Use a client-side only flag to prevent any server-side DOM access
-  const [isClient, setIsClient] = useState(false)
-
-  // Initialize inView states with default values
-  const [heroInView, setHeroInView] = useState(false)
-  const [aboutInView, setAboutInView] = useState(false)
-  const [servicesInView, setServicesInView] = useState(false)
-  const [caseStudiesInView, setCaseStudiesInView] = useState(false)
-  const [techStackInView, setTechStackInView] = useState(false)
-  const [contactInView, setContactInView] = useState(false)
+  // Create refs with a triggerOnce behavior to prevent flickering
+  const hero = useInView({ threshold: 0.1 });
+  const about = useInView({ threshold: 0.1 });
+  const services = useInView({ threshold: 0.1 });
+  const caseStudies = useInView({ threshold: 0.1 });
+  const techStack = useInView({ threshold: 0.1 });
+  const contact = useInView({ threshold: 0.1 });
 
   useEffect(() => {
-    // Set client-side flag after component mounts
-    setIsClient(true)
+    setIsMounted(true)
 
-    // Safe event listener setup
     const handleScroll = () => {
       setScrollY(window.scrollY)
     }
 
-    if (typeof window !== "undefined") {
-      window.addEventListener("scroll", handleScroll, { passive: true })
-      return () => window.removeEventListener("scroll", handleScroll)
-    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  useEffect(() => {
-    if (isClient) {
-      const heroObserver = new IntersectionObserver(
-        ([entry]) => {
-          setHeroInView(entry.isIntersecting)
-        },
-        { threshold: 0.5 },
-      )
-
-      const aboutObserver = new IntersectionObserver(
-        ([entry]) => {
-          setAboutInView(entry.isIntersecting)
-        },
-        { threshold: 0.3 },
-      )
-
-      const servicesObserver = new IntersectionObserver(
-        ([entry]) => {
-          setServicesInView(entry.isIntersecting)
-        },
-        { threshold: 0.3 },
-      )
-
-      const caseStudiesObserver = new IntersectionObserver(
-        ([entry]) => {
-          setCaseStudiesInView(entry.isIntersecting)
-        },
-        { threshold: 0.3 },
-      )
-
-      const techStackObserver = new IntersectionObserver(
-        ([entry]) => {
-          setTechStackInView(entry.isIntersecting)
-        },
-        { threshold: 0.3 },
-      )
-
-      const contactObserver = new IntersectionObserver(
-        ([entry]) => {
-          setContactInView(entry.isIntersecting)
-        },
-        { threshold: 0.3 },
-      )
-
-      if (heroRef.current) heroObserver.observe(heroRef.current)
-      if (aboutRef.current) aboutObserver.observe(aboutRef.current)
-      if (servicesRef.current) servicesObserver.observe(servicesRef.current)
-      if (caseStudiesRef.current) caseStudiesObserver.observe(caseStudiesRef.current)
-      if (techStackRef.current) techStackObserver.observe(techStackRef.current)
-      if (contactRef.current) contactObserver.observe(contactRef.current)
-
-      return () => {
-        heroObserver.disconnect()
-        aboutObserver.disconnect()
-        servicesObserver.disconnect()
-        caseStudiesObserver.disconnect()
-        techStackObserver.disconnect()
-        contactObserver.disconnect()
-      }
-    }
-  }, [isClient])
+  if (!isMounted) return null
 
   return (
-    <main className="relative min-h-screen bg-black text-white overflow-hidden">
-      {/* Grid Overlay */}
-      <div className="fixed inset-0 bg-grid-pattern opacity-10 pointer-events-none"></div>
-
+    <main className="min-h-screen overflow-hidden bg-black">
       <Navbar />
+      
+      {/* Each section needs to seamlessly connect with others to prevent gaps */}
+      <section ref={hero.ref} id="hero" className="relative bg-black">
+        <HeroSection inView={hero.inView} />
+        <div className="bg-black h-8 -mt-8"></div> {/* Ensure no gap */}
+      </section>
+      
+      <section ref={about.ref} id="about" className="relative bg-black">
+        <AboutSection inView={about.inView} />
+        <div className="bg-black h-8 -mt-8"></div> {/* Ensure no gap */}
+      </section>
+      
+      <section ref={services.ref} id="services" className="relative bg-black">
+        <ServicesSection inView={services.inView} />
+        <div className="bg-black h-8 -mt-8"></div> {/* Ensure no gap */}
+      </section>
+      
+      <section ref={caseStudies.ref} id="case-studies" className="relative bg-black">
+        <CaseStudiesSection inView={caseStudies.inView} />
+        <div className="bg-black h-8 -mt-8"></div> {/* Ensure no gap */}
+      </section>
+      
+      <section ref={techStack.ref} id="technology" className="relative bg-black">
+        <TechStackSection inView={techStack.inView} />
+        <div className="bg-black h-8 -mt-8"></div> {/* Ensure no gap */}
+      </section>
+      
+      <section ref={contact.ref} id="contact" className="relative bg-black">
+        <ContactSection inView={contact.inView} />
+      </section>
 
-      {/* Main Content */}
-      <div className="relative z-10">
-        <section ref={heroRef} id="hero" className="min-h-screen">
-          {isClient && <HeroSection inView={heroInView} />}
-        </section>
-
-        <section ref={aboutRef} id="about" className="min-h-screen py-20">
-          {isClient && <AboutSection inView={aboutInView} />}
-        </section>
-
-        <section ref={servicesRef} id="services" className="min-h-screen py-20">
-          {isClient && <ServicesSection inView={servicesInView} />}
-        </section>
-
-        <section ref={caseStudiesRef} id="case-studies" className="min-h-screen py-20">
-          {isClient && <CaseStudiesSection inView={caseStudiesInView} />}
-        </section>
-
-        <section ref={techStackRef} id="technology" className="min-h-screen py-20">
-          {isClient && <TechStackSection inView={techStackInView} />}
-        </section>
-
-        <section ref={contactRef} id="contact" className="min-h-screen py-20">
-          {isClient && <ContactSection inView={contactInView} />}
-        </section>
-      </div>
+      {/* Footer content can be added as a component if needed */}
+      <footer className="bg-black text-gray-500 text-center p-6 border-t border-gray-800">
+        <p>© {new Date().getFullYear()} DestinPQ. All rights reserved.</p>
+      </footer>
 
       {/* Chatbot Assistant */}
-      {isClient && <ChatbotAssistant />}
+      <ChatbotAssistant />
     </main>
   )
 }

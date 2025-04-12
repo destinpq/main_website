@@ -1,62 +1,56 @@
 "use client"
 
-import type React from "react"
-
 import { useEffect, useState } from "react"
-import { motion as framerMotion, AnimatePresence, type Transition } from "framer-motion"
+import type React from "react"
+import { motion, AnimatePresence, HTMLMotionProps } from "framer-motion"
 
-// Check if we're on a mobile device
-const isMobile = () => {
-  if (typeof window === 'undefined') return false
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-}
-
-// Safe versions of framer-motion components that only render on the client side
-export function SafeMotion(props: React.ComponentProps<typeof framerMotion.div>) {
-  const [isMounted, setIsMounted] = useState(false)
-  const [isReducedMotion, setIsReducedMotion] = useState(false)
-
+// Conditional components that either use real animations or render without animations
+export function SafeMotion(props: HTMLMotionProps<"div">) {
+  const [isMobile, setIsMobile] = useState(false)
+  
   useEffect(() => {
-    setIsMounted(true)
-    
-    // Check for reduced motion preference or mobile
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const isMobileDevice = isMobile()
-    setIsReducedMotion(prefersReducedMotion || isMobileDevice)
-  }, [])
-
-  if (!isMounted) {
-    return <div style={props.style as React.CSSProperties} className={props.className} />
-  }
-
-  // For mobile devices or reduced motion preference, simplify animations
-  if (isReducedMotion) {
-    // Apply simplified transitions for better performance on mobile
-    const simplifiedProps = {
-      ...props,
-      // Override with simpler transitions for better performance
-      transition: {
-        duration: 0.3,
-        type: 'tween' as const,
-        delay: 0,
-      } as Transition,
+    // Check if we're on mobile based on screen width or user agent
+    const checkMobile = () => {
+      const isMobileScreen = window.innerWidth < 768
+      setIsMobile(isMobileScreen)
     }
-    return <framerMotion.div {...simplifiedProps} />
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+  
+  // On mobile, just render a div without animations
+  if (isMobile) {
+    // Type assertion to avoid type errors when passing motion props to a regular div
+    const { animate, initial, exit, transition, variants, ...divProps } = props as any
+    return <div {...divProps} />
   }
-
-  return <framerMotion.div {...props} />
+  
+  // On desktop, use framer-motion animations
+  return <motion.div {...props} />
 }
 
-export function SafeAnimatePresence(props: React.ComponentProps<typeof AnimatePresence>) {
-  const [isMounted, setIsMounted] = useState(false)
-
+export function SafeAnimatePresence(props: { children: React.ReactNode; mode?: "sync" | "wait" | "popLayout" }) {
+  const [isMobile, setIsMobile] = useState(false)
+  
   useEffect(() => {
-    setIsMounted(true)
+    // Check if we're on mobile based on screen width
+    const checkMobile = () => {
+      const isMobileScreen = window.innerWidth < 768
+      setIsMobile(isMobileScreen)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
-
-  if (!isMounted) {
+  
+  // On mobile, just render children directly without animations
+  if (isMobile) {
     return <>{props.children}</>
   }
-
-  return <AnimatePresence {...props} />
+  
+  // On desktop, use AnimatePresence for animations
+  return <AnimatePresence {...props}>{props.children}</AnimatePresence>
 }
