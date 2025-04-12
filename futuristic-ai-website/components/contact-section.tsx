@@ -323,12 +323,20 @@ Additional Notes: ${callFormState.message || 'None provided'}
                 </div>
               </div>
               <p className="text-yellow-500 text-lg font-semibold mb-6">+91 9873521968</p>
-              <Button
-                onClick={() => setShowCallModal(true)}
-                className="w-full py-3 bg-black border-[1.5px] border-yellow-500 hover:bg-yellow-500/10 text-yellow-400 font-semibold text-lg rounded-xl"
-              >
-                Schedule a Call
-              </Button>
+              <div className="flex flex-col space-y-3">
+                <Button
+                  onClick={() => setShowCallModal(true)}
+                  className="w-full py-3 bg-black border-[1.5px] border-yellow-500 hover:bg-yellow-500/10 text-yellow-400 font-semibold text-lg rounded-xl"
+                >
+                  Schedule a Call
+                </Button>
+                <Button
+                  onClick={() => window.location.href = 'mailto:support@destinpq.com'}
+                  className="w-full py-3 bg-black border-[1.5px] border-blue-500 hover:bg-blue-500/10 text-blue-400 font-semibold text-lg rounded-xl"
+                >
+                  Send Email
+                </Button>
+              </div>
             </SafeMotion>
           </div>
 
