@@ -58,6 +58,7 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overscroll-behavior-y: none;
   }
 }
 
@@ -95,4 +96,43 @@
 
 .animate-pulse-slow {
   animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  /* Reduce animation complexity on mobile */
+  .animate-float {
+    animation-duration: 4s; /* Slower animations */
+  }
+  
+  .animate-pulse-slow {
+    animation-duration: 4s;
+  }
+  
+  /* Set will-change for hardware acceleration on critical animated elements */
+  .will-change-opacity {
+    will-change: opacity;
+  }
+  
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  /* Reduce blur effects which are performance heavy */
+  .blur-reduced {
+    filter: blur(5px);
+  }
+  
+  /* Prevent large layers */
+  * {
+    transform: translateZ(0);
+  }
+  
+  /* Help with page rendering */
+  html, body {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 }

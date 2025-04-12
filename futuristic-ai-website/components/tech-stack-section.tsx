@@ -75,6 +75,11 @@ export default function TechStackSection({ inView }: TechStackSectionProps) {
       description: "Suite of cloud computing services that runs on the same infrastructure that Google uses",
     },
     {
+      name: "Azure",
+      category: "Cloud Services",
+      description: "Microsoft's cloud computing platform for building, testing, and managing applications",
+    },
+    {
       name: "MongoDB",
       category: "Databases",
       description: "Source-available cross-platform document-oriented database program",
@@ -84,8 +89,56 @@ export default function TechStackSection({ inView }: TechStackSectionProps) {
       category: "Databases",
       description: "Powerful, open source object-relational database system",
     },
-    { name: "React", category: "Frontend", description: "JavaScript library for building user interfaces" },
-    { name: "Node.js", category: "Backend", description: "JavaScript runtime built on Chrome's V8 JavaScript engine" },
+    {
+      name: "SQL",
+      category: "Databases",
+      description: "Standard language for storing, manipulating, and retrieving data in relational databases",
+    },
+    {
+      name: "Neo4j",
+      category: "Databases",
+      description: "Graph database management system designed for storing and querying complex network structures",
+    },
+    { 
+      name: "React", 
+      category: "Frontend", 
+      description: "JavaScript library for building user interfaces" 
+    },
+    { 
+      name: "Angular", 
+      category: "Frontend", 
+      description: "Platform and framework for building single-page client applications using HTML and TypeScript" 
+    },
+    { 
+      name: "Next.js", 
+      category: "Frontend", 
+      description: "React framework that enables server-side rendering and static site generation for web applications" 
+    },
+    { 
+      name: "Node.js", 
+      category: "Backend", 
+      description: "JavaScript runtime built on Chrome's V8 JavaScript engine" 
+    },
+    { 
+      name: "Nest.js", 
+      category: "Backend", 
+      description: "Progressive Node.js framework for building efficient, reliable, and scalable server-side applications" 
+    },
+    { 
+      name: "Flutter", 
+      category: "Mobile Development", 
+      description: "Google's UI toolkit for building natively compiled applications for mobile, web, and desktop from a single codebase" 
+    },
+    { 
+      name: "iOS (Swift/SwiftUI)", 
+      category: "Mobile Development", 
+      description: "Apple's development ecosystem for building applications for iPhone, iPad, and other Apple devices" 
+    },
+    { 
+      name: "Android (Kotlin/Java)", 
+      category: "Mobile Development", 
+      description: "Google's platform for creating applications for Android devices with support for modern programming languages" 
+    },
   ]
 
   const categories = ["all", ...Array.from(new Set(techStack.map((item) => item.category)))]

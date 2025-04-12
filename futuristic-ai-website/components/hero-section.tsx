@@ -84,19 +84,19 @@ export default function HeroSection({ inView }: HeroSectionProps) {
       <div className="max-w-7xl mx-auto flex flex-col items-center">
         {/* Logo with animation */}
         <SafeMotion
-          className="relative mb-12 md:mb-16 w-[350px] h-[350px]"
+          className="relative mb-12 md:mb-16 w-[280px] h-[280px] md:w-[350px] md:h-[350px]"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
           {/* Outer yellow glow with larger blur for smoother transition */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-600 to-amber-500 blur-2xl opacity-90 scale-150"></div>
+          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-600 to-amber-500 blur-lg md:blur-2xl opacity-90 scale-125 md:scale-150"></div>
           
           {/* Solid black center that transitions to yellow */}
           <div className="absolute inset-[5%] rounded-full bg-black"></div>
           
           {/* Gradient ring from black to yellow */}
-          <div className="absolute inset-[5%] rounded-full bg-gradient-radial from-transparent via-black to-yellow-500/90 blur-xl pointer-events-none"></div>
+          <div className="absolute inset-[5%] rounded-full bg-gradient-radial from-transparent via-black to-yellow-500/90 blur-md md:blur-xl pointer-events-none"></div>
           
           {/* Logo container with pure black background */}
           <div className="absolute inset-[25%] rounded-full flex items-center justify-center overflow-hidden">
@@ -106,6 +106,7 @@ export default function HeroSection({ inView }: HeroSectionProps) {
                   src="/thunh.png" 
                   alt="DestinPQ Logo" 
                   fill
+                  sizes="(max-width: 768px) 210px, 262px"
                   className="object-contain" 
                   priority
                 />
