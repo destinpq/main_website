@@ -1,0 +1,44 @@
+[
+  {
+    "title": "Predictive Maintenance Revolution",
+    "client": "Global Manufacturing Corp",
+    "description": "Implemented an advanced neural network system that predicts equipment failures before they occur, reducing downtime and maintenance costs.",
+    "image": "/placeholder.svg?height=600&width=800",
+    "results": [
+      "Reduced unplanned downtime by 78%",
+      "Saved $4.2M in annual maintenance costs",
+      "Increased equipment lifespan by 35%",
+      "ROI achieved within 6 months"
+    ],
+    "date": "2024-01-01",
+    "category": "Manufacturing"
+  },
+  {
+    "title": "Customer Behavior Analysis",
+    "client": "Retail Chain Enterprises",
+    "description": "Developed a comprehensive AI system that analyzes customer behavior patterns across digital and physical touchpoints to optimize marketing strategies and personalize customer experiences.",
+    "image": "/placeholder.svg?height=600&width=800",
+    "results": [
+      "Increased conversion rates by 42%",
+      "Boosted customer retention by 28%",
+      "Personalized recommendations led to 35% higher average order value",
+      "Reduced customer acquisition costs by 23%"
+    ],
+    "date": "2024-02-01",
+    "category": "Retail"
+  },
+  {
+    "title": "Autonomous Decision System",
+    "client": "FinTech Innovations Inc.",
+    "description": "Created an AI-powered decision-making system that processes millions of financial transactions in real-time to detect fraud, assess risk, and automate approval processes.",
+    "image": "/placeholder.svg?height=600&width=800",
+    "results": [
+      "Fraud detection accuracy increased to 99.7%",
+      "Processing time reduced from hours to milliseconds",
+      "Automated 87% of routine approval decisions",
+      "Saved over 120,000 work hours annually"
+    ],
+    "date": "2024-03-01",
+    "category": "Finance"
+  }
+] 
