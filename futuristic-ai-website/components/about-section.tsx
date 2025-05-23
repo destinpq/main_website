@@ -39,16 +39,16 @@ export default function AboutSection({ inView }: AboutSectionProps) {
       description: "Architecting our technological framework and ensuring our AI systems deliver cutting-edge performance with scalability."
     },
     { 
-      name: "Tejaswi Rangineni", 
-      role: "Content Curator", 
-      image: "/team/tejaswi.png",
-      description: "Crafting compelling narratives and ensuring our AI communication maintains the highest standards of clarity and engagement."
-    },
-    { 
       name: "Shaurya Bansal", 
       role: "R&D Head", 
       image: "/shaurya.jpg",
       description: "Spearheading our research initiatives to discover breakthrough AI applications and next-generation neural network architectures."
+    },
+    { 
+      name: "Mohit Sharma", 
+      role: "Chief Marketing Officer", 
+      image: "/mohit.jpeg",
+      description: "Developing strategic marketing initiatives and building strong brand presence to drive growth and market penetration for our AI solutions."
     },
   ]
 
