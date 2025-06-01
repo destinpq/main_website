@@ -117,6 +117,10 @@ export default function HeroSection({ inView }: HeroSectionProps) {
             possibilities.
           </div>
 
+          <div className="mt-4 inline-flex items-center px-4 py-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+            <span className="text-yellow-400 font-medium">Consultation Fee: 1000₹ per hour</span>
+          </div>
+
           <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
