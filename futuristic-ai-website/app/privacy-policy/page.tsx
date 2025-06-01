@@ -62,11 +62,11 @@ export default function PrivacyPolicy() {
         <p>Please check our Privacy Policy periodically for changes. We may update this Privacy Policy to reflect changes to our information practices. We may alert / notify you about the significant changes to the Privacy Policy, in the manner as may be required under applicable laws.</p>
         
         <h2 className="text-2xl font-semibold mt-6 mb-4">Grievance Officer</h2>
-        <p>Insert Name of the Office:<br />
-        Designation:<br />
-        Insert Name and Address of the Company:<br />
-        Contact us:<br />
-        Phone: <br />
+        <p>Pratik Atul Khanapurkar<br />
+        Designation: Founder<br />
+        Company: DestinPQ<br />
+        Contact us: <a href="mailto:support@destinpq.com">support@destinpq.com</a><br />
+        Phone: +91 9873521968<br />
         Time: Monday - Friday (9:00 - 18:00)</p>
       </div>
     </div>
