@@ -2,43 +2,93 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Refund & Cancellation Policy | DestinPQ",
-  description: "Refund and cancellation policy for DestinPQ services",
+  description: "Refund and cancellation policy for DestinPQ consultation services",
 };
 
 export default function RefundCancellationPolicy() {
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8">Refund and Cancellation Policy</h1>
-      <div className="prose max-w-none">
-        <p>This refund and cancellation policy outlines how you can cancel or seek a refund for a product / service that you have purchased through the Platform. Under this policy:</p>
+    <div className="container mx-auto px-4 py-12 bg-black text-white min-h-screen">
+      <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-yellow-400 to-amber-500 text-transparent bg-clip-text">
+        Refund and Cancellation Policy
+      </h1>
+      
+      <div className="prose prose-invert max-w-none text-gray-300">
+        <p className="text-lg mb-6">
+          This refund and cancellation policy outlines the terms for our AI consultation services 
+          charged at <strong className="text-yellow-400">1000₹ per hour</strong>.
+        </p>
         
-        <ol className="list-decimal space-y-4 pl-6">
-          <li>Cancellations will only be considered if the request is made 2 days of placing the order. However, cancellation requests may not be entertained if the orders have been communicated to such sellers / merchant(s) listed on the Platform and they have initiated the process of shipping them, or the product is out for delivery. In such an event, you may choose to reject the product at the doorstep.</li>
-          
-          <li>In case you feel that the product received is not as shown on the site or as per your expectations, you must bring it to the notice of our customer service within 2 days of receiving the product. The customer service team after looking into your complaint will take an appropriate decision.</li>
-          
-          <li>In case of complaints regarding the products that come with a warranty from the manufacturers, please refer the issue to them.</li>
-        </ol>
+        <h2 className="text-2xl font-semibold mt-8 mb-4 text-yellow-400">Consultation Services Policy</h2>
         
-        <p className="mt-6">In case of any refunds approved by DESTINPQ LLP, it will take 2 days for the refund to be processed to you.</p>
-        
-        <h2 className="text-2xl font-semibold mt-8 mb-4">Return Policy</h2>
-        <p>We offer refund / exchange within first 2 days from the date of your purchase. If 2 days have passed since your purchase, you will not be offered a return, exchange or refund of any kind.</p>
-        
-        <p>In order to become eligible for a return or an exchange:</p>
-        <ul className="list-disc space-y-2 pl-6">
-          <li>The purchased item should be unused and in the same condition as you received it</li>
-          <li>The item must have original packaging</li>
-          <li>If the item that you purchased on a sale, then the item may not be eligible for a return / exchange</li>
+        <h3 className="text-xl font-semibold mt-6 mb-3 text-white">Cancellation Policy</h3>
+        <ul className="list-disc space-y-3 pl-6 mb-6">
+          <li><strong>24-Hour Notice:</strong> Consultations can be cancelled or rescheduled with at least 24 hours advance notice without any charges.</li>
+          <li><strong>Less than 24 Hours:</strong> Cancellations made with less than 24 hours notice will incur a 50% charge of the scheduled consultation fee.</li>
+          <li><strong>No-Show Policy:</strong> Failure to attend a scheduled consultation without prior notice will result in the full consultation fee being charged.</li>
+          <li><strong>Emergency Situations:</strong> Genuine emergencies will be considered on a case-by-case basis for fee waiver.</li>
         </ul>
-        
-        <p className="mt-4">Further, only such items are replaced by us (based on an exchange request), if such items are found defective or damaged.</p>
-        
-        <p>You agree that there may be a certain category of products / items that are exempted from returns or refunds. Such categories of the products would be identified to you at the item of purchase.</p>
-        
-        <p>For exchange / return accepted request(s) (as applicable), once your returned product / item is received and inspected by us, we will send you an email to notify you about receipt of the returned / exchanged product. Further, if the same has been approved after the quality check at our end, your request (i.e. return / exchange) will be processed in accordance with our policies.</p>
-        
+
+        <h3 className="text-xl font-semibold mt-6 mb-3 text-white">Refund Policy</h3>
+        <ul className="list-disc space-y-3 pl-6 mb-6">
+          <li><strong>Service Dissatisfaction:</strong> If you are not satisfied with the consultation within the first 15 minutes, you may request a full refund.</li>
+          <li><strong>Technical Issues:</strong> Full refund will be provided if the consultation cannot proceed due to technical issues on our end.</li>
+          <li><strong>Consultant Absence:</strong> Full refund will be provided if our consultant fails to attend the scheduled session.</li>
+          <li><strong>Partial Consultations:</strong> If a consultation is interrupted due to technical issues on our end, you will only be charged for the actual time spent in consultation.</li>
+        </ul>
+
+        <h3 className="text-xl font-semibold mt-6 mb-3 text-white">Payment Terms</h3>
+        <ul className="list-disc space-y-3 pl-6 mb-6">
+          <li>Consultation fees are charged at <strong className="text-yellow-400">1000₹ per hour</strong></li>
+          <li>Minimum consultation duration is 30 minutes (500₹)</li>
+          <li>Sessions are billed in 15-minute increments after the minimum duration</li>
+          <li>Payment is required in advance of the consultation session</li>
+        </ul>
+
+        <h3 className="text-xl font-semibold mt-6 mb-3 text-white">Refund Processing</h3>
+        <ul className="list-disc space-y-3 pl-6 mb-6">
+          <li>Approved refunds will be processed within 5-7 business days</li>
+          <li>Refunds will be credited to the original payment method</li>
+          <li>Bank transfer fees, if any, will be deducted from the refund amount</li>
+        </ul>
+
+        <h3 className="text-xl font-semibold mt-6 mb-3 text-white">Non-Refundable Situations</h3>
+        <ul className="list-disc space-y-3 pl-6 mb-6">
+          <li>Consultations that have been completed successfully</li>
+          <li>Cancellations made after the consultation has started</li>
+          <li>Requests made more than 48 hours after the consultation</li>
+          <li>Consultations where deliverables or advice have been provided and utilized</li>
+        </ul>
+
+        <h3 className="text-xl font-semibold mt-6 mb-3 text-white">Rescheduling Policy</h3>
+        <ul className="list-disc space-y-3 pl-6 mb-6">
+          <li>Consultations can be rescheduled up to 2 times without additional charges</li>
+          <li>Rescheduling requests must be made at least 12 hours in advance</li>
+          <li>Third rescheduling request will incur a processing fee of 200₹</li>
+        </ul>
+
+        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-6 mt-8">
+          <h3 className="text-xl font-semibold mb-3 text-yellow-400">Contact Us</h3>
+          <p>For any questions regarding this policy or to request a refund/cancellation, please contact us:</p>
+          <ul className="list-none space-y-2 mt-3">
+            <li><strong>Email:</strong> support@destinpq.com</li>
+            <li><strong>Phone:</strong> +91-XXXXXXXXXX</li>
+            <li><strong>Response Time:</strong> Within 24 hours</li>
+          </ul>
         </div>
+
+        <p className="text-sm mt-8 text-gray-400">
+          <strong>Last Updated:</strong> {new Date().toLocaleDateString('en-IN', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })}
+        </p>
+        
+        <p className="text-sm mt-4 text-gray-400">
+          DestinPQ LLP reserves the right to modify this policy at any time. 
+          Changes will be communicated via email and updated on our website.
+        </p>
+      </div>
     </div>
   );
 } 
