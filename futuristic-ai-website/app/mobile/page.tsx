@@ -123,10 +123,38 @@ ${formState.message}
 
   const navLinks = [
     { name: "Home", id: "hero" },
+    { name: "About", id: "about" },
     { name: "Services", id: "services" },
     { name: "Tech Stack", id: "tech-stack" },
     { name: "Case Studies", id: "case-studies" },
     { name: "Contact", id: "contact" },
+  ]
+
+  const teamMembers = [
+    { 
+      name: "Dr. Akanksha Agarwal", 
+      role: "CEO, Psy D", 
+      image: "/akanksha.jpg",
+      description: "Leading our vision for AI innovation with a unique background in psychology, focusing on ethical and human-centered AI solutions."
+    },
+    { 
+      name: "Pratik Khanapurkar", 
+      role: "CTO", 
+      image: "/pratik.jpg",
+      description: "Architecting our technological framework and ensuring our AI systems deliver cutting-edge performance with scalability."
+    },
+    { 
+      name: "Shaurya Bansal", 
+      role: "R&D Head", 
+      image: "/shaurya.jpg",
+      description: "Spearheading our research initiatives to discover breakthrough AI applications and next-generation neural network architectures."
+    },
+    { 
+      name: "Mohit Agrwal", 
+      role: "Chief Marketing Officer", 
+      image: "/mohit.jpeg",
+      description: "Developing strategic marketing initiatives and building strong brand presence to drive growth and market penetration for our AI solutions."
+    },
   ]
 
   const services = [
@@ -327,6 +355,43 @@ ${formState.message}
               View Case Studies
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-8 px-4 bg-black">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 text-transparent bg-clip-text mb-4">
+            Meet Our AI Experts
+          </h2>
+          <p className="text-gray-300">The brilliant minds behind DestinPQ's innovation</p>
+        </div>
+
+        <div className="space-y-6">
+          {teamMembers.map((member, index) => (
+            <div key={index} className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+              <div className="flex flex-col sm:flex-row">
+                <div className="relative h-48 sm:h-auto sm:w-32 bg-gradient-to-br from-yellow-900/20 to-amber-900/20 flex-shrink-0">
+                  <Image 
+                    src={member.image} 
+                    alt={member.name}
+                    className="object-cover"
+                    fill
+                    sizes="(max-width: 640px) 100vw, 128px"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = `https://placehold.co/400x400/111/333?text=${member.name.split(' ').map(n => n[0]).join('')}`;
+                    }}
+                  />
+                </div>
+                <div className="p-4 flex-1">
+                  <h3 className="text-xl font-bold text-white mb-1">{member.name}</h3>
+                  <p className="text-yellow-400 font-medium mb-3">{member.role}</p>
+                  <p className="text-gray-400 text-sm leading-relaxed">{member.description}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
