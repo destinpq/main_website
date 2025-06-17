@@ -11,6 +11,7 @@ import { CaseStudy } from "@/types/case-study"
 export default function MobilePage() {
   const [activeSection, setActiveSection] = useState('hero')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [activePopup, setActivePopup] = useState<string | null>(null)
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -133,33 +134,47 @@ ${formState.message}
       title: "Neural Networks",
       description: "Custom-built neural architectures for your specific needs.",
       icon: <Brain className="text-white" size={24} />,
+      detailedDescription: "Neural Networks are the backbone of modern AI. We design and implement custom neural network architectures including:\n\n• Deep Learning Models: Multi-layer networks for complex pattern recognition\n• Convolutional Neural Networks (CNNs): Perfect for image and video analysis\n• Recurrent Neural Networks (RNNs): Ideal for sequential data like time series\n• Transformer Networks: State-of-the-art for natural language processing\n• Custom Architectures: Tailored specifically to your business requirements\n\nOur neural networks can handle tasks like image classification, speech recognition, predictive modeling, and much more. We ensure optimal performance through careful architecture design and hyperparameter tuning."
     },
     {
       title: "Predictive Analytics",
       description: "Advanced predictive models for forecasting trends.",
       icon: <LineChart className="text-white" size={24} />,
+      detailedDescription: "Predictive Analytics uses historical data and machine learning to forecast future outcomes. Our services include:\n\n• Sales Forecasting: Predict future sales trends and demand patterns\n• Customer Behavior Prediction: Anticipate customer actions and preferences\n• Risk Assessment: Identify potential risks before they become problems\n• Market Analysis: Forecast market trends and opportunities\n• Inventory Optimization: Predict optimal stock levels and reorder points\n• Maintenance Prediction: Anticipate equipment failures and maintenance needs\n\nWe use advanced algorithms like regression analysis, time series forecasting, and ensemble methods to deliver accurate predictions that drive business decisions."
     },
     {
       title: "Generative AI",
       description: "Generative models tailored to your brand and needs.",
       icon: <Cpu className="text-white" size={24} />,
+      detailedDescription: "Generative AI creates new content from existing data patterns. Our custom solutions include:\n\n• Content Generation: Create text, images, and multimedia content automatically\n• Brand-Specific Models: Train models on your data for consistent brand voice\n• Creative Automation: Generate marketing materials, product descriptions, and social media content\n• Data Augmentation: Create synthetic data to enhance your training datasets\n• Personalization: Generate personalized content for individual users\n• Creative Assistance: AI-powered tools for designers, writers, and content creators\n\nWe specialize in fine-tuning large language models (LLMs) and diffusion models to match your specific requirements, ensuring generated content aligns with your brand identity and business goals."
     },
     {
       title: "Conversational AI",
       description: "Intelligent chatbots that understand natural language.",
       icon: <MessageSquare className="text-white" size={24} />,
+      detailedDescription: "Conversational AI enables natural, human-like interactions between users and machines. Our solutions include:\n\n• Intelligent Chatbots: Context-aware bots that understand user intent\n• Voice Assistants: Speech-enabled AI for hands-free interactions\n• Customer Support Automation: 24/7 AI-powered customer service\n• Multi-language Support: Chatbots that communicate in multiple languages\n• Integration Services: Seamless integration with existing systems and platforms\n• Sentiment Analysis: Understanding user emotions and responding appropriately\n\nOur conversational AI systems use natural language processing (NLP), intent recognition, and machine learning to provide meaningful, helpful interactions that improve customer satisfaction and reduce operational costs."
     },
     {
       title: "Computer Vision",
       description: "Image recognition and visual analysis systems.",
       icon: <Network className="text-white" size={24} />,
+      detailedDescription: "Computer Vision enables machines to interpret and understand visual information. Our expertise covers:\n\n• Object Detection: Identify and locate objects in images and videos\n• Facial Recognition: Secure authentication and identity verification systems\n• Quality Control: Automated inspection for manufacturing and production\n• Medical Imaging: AI-powered analysis of medical scans and diagnostics\n• Autonomous Systems: Vision systems for robots and self-driving vehicles\n• Optical Character Recognition (OCR): Extract text from images and documents\n• Real-time Processing: Live video analysis for security and monitoring\n\nWe implement cutting-edge computer vision algorithms using deep learning frameworks to deliver accurate, fast, and scalable visual intelligence solutions."
     },
     {
       title: "Big Data Processing",
       description: "Transform massive datasets into actionable insights.",
       icon: <Database className="text-white" size={24} />,
+      detailedDescription: "Big Data Processing handles massive volumes of structured and unstructured data. Our services include:\n\n• Data Pipeline Architecture: Scalable systems for data ingestion and processing\n• Real-time Analytics: Process streaming data for immediate insights\n• Data Warehousing: Organize and store large datasets efficiently\n• ETL/ELT Processes: Extract, transform, and load data from multiple sources\n• Distributed Computing: Leverage cloud and cluster computing for scale\n• Data Lake Implementation: Store and analyze diverse data types\n• Performance Optimization: Ensure fast query response times and efficient processing\n\nWe use technologies like Apache Spark, Hadoop, Kafka, and cloud-native solutions to process petabytes of data, enabling data-driven decision making and unlocking valuable business insights."
     },
   ]
+
+  const openPopup = (serviceTitle: string) => {
+    setActivePopup(serviceTitle)
+  }
+
+  const closePopup = () => {
+    setActivePopup(null)
+  }
 
   const techCategories = ["all", "ML Frameworks", "AI Services", "Infrastructure", "Cloud Services", "Databases", "Frontend", "Backend", "Mobile Development"]
   
@@ -239,6 +254,39 @@ ${formState.message}
         </div>
       )}
 
+      {/* Popup Modal */}
+      {activePopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 border border-gray-700 rounded-xl max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <div className="p-4 border-b border-gray-700 flex justify-between items-center">
+              <h3 className="text-xl font-bold text-yellow-400">{activePopup}</h3>
+              <button onClick={closePopup} className="text-gray-400 hover:text-white">
+                <X size={24} />
+              </button>
+            </div>
+            <div className="p-4">
+              <div className="text-gray-300 whitespace-pre-line leading-relaxed">
+                {services.find(service => service.title === activePopup)?.detailedDescription}
+              </div>
+              <div className="mt-6 pt-4 border-t border-gray-700">
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 mb-4">
+                  <p className="text-yellow-400 text-sm font-medium">💡 Consultation Fee: 1000₹ per hour</p>
+                </div>
+                <button 
+                  onClick={() => {
+                    closePopup()
+                    handleScroll('contact')
+                  }}
+                  className="w-full bg-yellow-600 text-white py-2 px-4 rounded-lg font-medium"
+                >
+                  Get Started with This Service
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section id="hero" className="pt-16 pb-12 px-4 flex flex-col items-center">
         <div className="relative mb-8 w-[200px] h-[200px]">
@@ -260,6 +308,10 @@ ${formState.message}
           <p className="mt-4 text-base text-gray-300 px-2">
             Pioneering the future of AI and machine learning solutions that transform industries.
           </p>
+
+          <div className="mt-4 inline-flex items-center px-4 py-2 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+            <span className="text-yellow-400 font-medium">Consultation Fee: 1000₹ per hour</span>
+          </div>
 
           <div className="mt-8 flex flex-col gap-4">
             <button
@@ -300,10 +352,13 @@ ${formState.message}
                 <CardDescription className="text-gray-400">{service.description}</CardDescription>
               </CardContent>
               <CardFooter>
-                <div className="flex items-center text-yellow-500">
+                <button 
+                  onClick={() => openPopup(service.title)}
+                  className="flex items-center text-yellow-500 hover:text-yellow-400 transition-colors"
+                >
                   <span className="mr-2">Learn more</span>
                   <ChevronRight className="h-4 w-4 ml-1" />
-                </div>
+                </button>
               </CardFooter>
             </Card>
           ))}
