@@ -45,7 +45,7 @@ export default function AboutSection({ inView }: AboutSectionProps) {
       description: "Spearheading our research initiatives to discover breakthrough AI applications and next-generation neural network architectures."
     },
     { 
-      name: "Mohit Sharma", 
+      name: "Mohit Agrwal", 
       role: "Chief Marketing Officer", 
       image: "/mohit.jpeg",
       description: "Developing strategic marketing initiatives and building strong brand presence to drive growth and market penetration for our AI solutions."
